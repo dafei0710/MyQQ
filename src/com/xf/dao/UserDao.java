@@ -33,6 +33,25 @@ public class UserDao {
 
         return null;
     }
+    //通过账号查询用户信息，id用户账号，返回用户对象
+    public UserInfo getUserById(int id){
+        //通过工具类去获取数据库连接
+        Connection conn = DBManager.getConn();
+        //qr执行查询连接 sql语句
+        try {
+            return  qr.query(conn,"select * from userinfo where id=? ",new BeanHandler<>(UserInfo.class),id);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }finally {
+            try {
+                conn.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return null;
+    }
 
     //注册功能,昵称，密码
     public int register(String nickName,String password){
@@ -70,7 +89,7 @@ public class UserDao {
         //
        Connection conn= DBManager.getConn();
         try {
-         qr.execute(conn,"update userinfo set stateid=? where id =?",state,id);
+            int execute = qr.execute(conn,"update userinfo set stateid=? where id =?",state,id);
          //System.out.println(state);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -84,6 +103,25 @@ public class UserDao {
 
 
     }
+    //通过账户修改签名，id用户账户，sign签名
+    public void updateUserSignById(String id,String sign) {
+        //
+        Connection conn = DBManager.getConn();
+        try {
+            int execute = qr.execute(conn, "update userinfo set sign=? where id =?", sign, id);
+            //System.out.println(state);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                conn.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
+
 
     public static void main(String[] args) {
        // UserDao userDao =new UserDao();

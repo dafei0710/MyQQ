@@ -80,6 +80,7 @@ public class LoginJF extends JFrame { //加载界面方法 frame窗体
         }
         DefaultComboBoxModel aMoudel =new DefaultComboBoxModel<>(v);//创建模型
         stateJC.setModel(aMoudel);
+        stateJC.setSelectedIndex(1);
         stateJC.setBounds(300,170,100,26);//
 
         bgJP.add(stateJC);
@@ -98,7 +99,8 @@ public class LoginJF extends JFrame { //加载界面方法 frame窗体
         pwdJl.setBounds(95,210,100,26);
         pwdJl.setFont(new Font("微软雅黑",Font.BOLD,14));//调整字体大小
         bgJP.add(pwdJl);
-        JPasswordField pwdJT=new JPasswordField();//密码输入框
+        //JPasswordField pwdJT=new JPasswordField();//密码输入框
+        JPasswordField pwdJT=new JPasswordField("111111");//密码输入框
         pwdJT.setBounds(150,210,150,26);
         pwdJT.setFont(new Font("微软雅黑",Font.PLAIN,12));//调整字体大小
         bgJP.add(pwdJT);

@@ -7,8 +7,12 @@ import java.awt.Point;
 import javax.swing.*;
 
 import javax.swing.border.LineBorder;
+import javax.swing.event.AncestorEvent;
+import javax.swing.event.AncestorListener;
 
+import com.xf.beans.FriendsInfo;
 import com.xf.beans.UserInfo;
+import com.xf.dao.FriendsDao;
 import com.xf.dao.UserDao;
 
 import java.awt.BorderLayout;
@@ -57,6 +61,8 @@ public class QQMainJFrame extends javax.swing.JFrame implements WindowListener {
 		//当前登录用户对象
 	private UserInfo userInfo ;
 	UserDao userDao =new UserDao();
+	FriendsDao friendsDao =new FriendsDao();
+
 	/**
 	 * Auto-generated main method to display this JFrame
 	 */
@@ -79,13 +85,16 @@ public class QQMainJFrame extends javax.swing.JFrame implements WindowListener {
 		//当窗口关闭的时候，不操作
 		this.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		//this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);//界面关闭之后，同步关闭程序进程
+		this.setIconImage(new ImageIcon(this.getClass().getResource("../images/1.jpg")).getImage());//设置窗体logo
 		//添加关闭窗体按钮监听
 		this.addWindowListener(this);
+		this.setTitle("盗版OICQ");//添加标题
 
 
 	}
 
 	private void initGUI() {
+		QQMainJFrame that=this;//复制给自己
 		try {
 			//修改关闭方式为：关闭窗口，退出程序
 			setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -107,26 +116,36 @@ public class QQMainJFrame extends javax.swing.JFrame implements WindowListener {
 					image1.setImage(image1.getImage().getScaledInstance(69, 66, Image.SCALE_DEFAULT));
 					jLabel1.setIcon(image1);
 					jPanel1.add(jLabel1);
-					jLabel1.setBounds(18, 22, 69, 66);
+					jLabel1.setBounds(18, 15, 69, 66);//22
 					//jLabel1.setBorder(new LineBorder(new java.awt.Color(255,0,128), 1, false));
 				}
 				{
 					jLabel2 = new JLabel();
 					jPanel1.add(jLabel2);
-					jLabel2.setBounds(111, 31, 237, 49);
+					jLabel2.setBounds(111, 13, 200, 75);//111,13,237,48,28
+
+					//
 
 
 					jLabel2.setText(this.userInfo.getNickname());//当前用户昵称赋值
 					jLabel2.setFont(new Font("微软雅黑", Font.BOLD, 20));
-					jLabel2.setForeground(Color.BLACK);
+					jLabel2.setForeground(Color.red);
+
+					/*
+					JLabel unameJl =new JLabel("生日快乐");
+					unameJl.setBounds(164,23,100,28);
+					unameJl.setFont(new Font("微软雅黑",Font.BOLD,18));//调整字体大小
+					unameJl.setForeground(Color.red);
+					jLabel2.add(unameJl);
+					*/
 				}
+
 
 				{
 					JLabel state = new JLabel();
 
-
 					jPanel1.add(state);
-					state.setBounds(111, 75, 237, 20);
+					state.setBounds(111, 68, 50, 20);//111，60，237，20
 					//根据用户选择状态显示不同用户状态
 					if(this.userInfo.getStateid()==8){
 						state.setText("写代码");
@@ -161,14 +180,69 @@ public class QQMainJFrame extends javax.swing.JFrame implements WindowListener {
 					}
 
 
+					state.setFont(new Font("微软雅黑", Font.PLAIN, 12));
+
+				}
+				{
+					//让默认焦点不在文本输入框中,设置在组建容器中
+					jPanel1.setFocusable(true);
+					JTextField sign =new JTextField(this.userInfo.getSign());//个性签名
+					//sign.setBounds(144,23,100,28);
+					//sign.setBounds(30,55,237,20);//可以正常
+					sign.setOpaque(false);//设置组件透明
+					sign.setBounds(30,55,237,22);
+					sign.setBackground(new Color(0,0,0,0));//MacOs 设置java JtextFiled文本框为透明色
+					//MatteBorder mb =new MatteBorder(0, 0, 0, 0,Color.cyan);
+					sign.setFont(new Font("微软雅黑",Font.PLAIN,12));//调整字体大小
+					//sign.setFocusable(false);
+
+					sign.addFocusListener(new FocusListener() {
+						//得到焦点
+						@Override
+						public void focusGained(FocusEvent e) {
+							sign.setOpaque(true);
+							sign.setBackground(Color.white);
+							//sign.setBackground(new Color(0,0,0,0));//MacOs 设置java JtextFiled文本框为透明色
+						}
+						//失去焦点
+						@Override
+						public void focusLost(FocusEvent e) {
+							sign.setOpaque(false);
+							sign.setBackground(new Color(0,0,0,0));//MacOs 设置java JtextFiled文本框为透明色
+							userDao.updateUserSignById(that.userInfo.getId()+"",sign.getText());//修改签名的功能
+						}
+					});
 
 
-					//state.setFont(new Font("微软雅黑", Font.PLAIN, 20));
+
+
+					sign.setForeground(Color.red);
+					jLabel2.add(sign);
 
 				}
 
 
+				{
+					JLabel bg = new JLabel();
+					jPanel1.add(bg);
+					bg.setIcon(new ImageIcon(this.getClass().getResource("../images/bj01.gif")));
+					bg.setBounds(-20, -25, 450, 280);//x,y237，20，，，450，280
+					//
+				}
+
+
+
+				/*
+					JLabel unameJl =new JLabel("生日快乐");
+					unameJl.setBounds(164,23,100,28);
+					unameJl.setFont(new Font("微软雅黑",Font.BOLD,18));//调整字体大小
+					unameJl.setForeground(Color.red);
+					jLabel2.add(unameJl);
+					*/
+
 			}
+
+
 			{
 				jPanel2 = new JPanel();
 				getContentPane().add(jPanel2, BorderLayout.SOUTH);
@@ -224,14 +298,33 @@ public class QQMainJFrame extends javax.swing.JFrame implements WindowListener {
 							//new GridLayout(行数, 列数, 水平间距,垂直间距);
 							GridLayout jPanel6Layout = new GridLayout(50, 1, 0,10);
 
-							//循环创建50个好友
-							JLabel[] jls = new JLabel[50];
+							//单表查询
+							//主窗体有当前登陆的账号  this.userinfo.getid()
+
+							//通过当前账号查询好友的账号
+							List<FriendsInfo> friends =friendsDao.getFriends(this.userInfo.getId());
+							//System.out.println(this.userInfo.getId());
+
+
+							//再通过好友账号查询好友的信息，刷新好友列表
+							for (FriendsInfo friendsInfo:friends) {
+								UserInfo info = userDao.getUserById(friendsInfo.getFriendid());
+
+							}
+
+
+							//通过当前账号好友刷新好友列表
+							JLabel[] jls = new JLabel[friends.size()];
 							for(int i=0;i<jls.length;i++){
 								//new JLabel(文本,图片地址,放的位置);
-								jls[i] = new JLabel("好友"+(i+1), new ImageIcon("images/QQfaces/LargeImage/12.jpg"), JLabel.LEFT);
+								UserInfo info = userDao.getUserById(friends.get(i).getFriendid());//获取到当前好友的信息，并加载到界面
+								//System.out.println(friends.get(i).getFriendid());
+								jls[i] = new JLabel(info.getNickname(), new ImageIcon(this.getClass().getResource("../images/QQfaces/LargeImage/12.jpg")), JLabel.LEFT);
 								jPanel6.add(jls[i]);
 							}
 							jPanel6.setLayout(jPanel6Layout);
+
+
 
 							//把面板放到滚动面板里
 							jScrollPane1.setViewportView(jPanel6);

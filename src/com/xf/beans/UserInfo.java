@@ -12,6 +12,16 @@ public class UserInfo {
 				+ ", address=" + address + ", stateid=" + stateid + ", questionid=" + questionid + ", answer=" + answer
 				+ "]";
 	}
+
+	public String getSign() {
+		return sign;
+	}
+
+	public void setSign(String sign) {
+		this.sign = sign;
+	}
+
+	private String sign;
 	private int id;
 	private String loginpwd;
 	private int friendshippolicyid;
