@@ -18,6 +18,7 @@ public class LoginJF extends JFrame { //加载界面方法 frame窗体
     int w=429,h=350;//设置宽度高度
     UserDao userDao =new UserDao();//用户持久层对象
     StateDao stateDao =new StateDao();//状态持久层对象
+     int state =1;
     public LoginJF(){
         //第一步给窗体添加组建容器
         JPanel bgJP =new JPanel();//容器创建
@@ -51,11 +52,19 @@ public class LoginJF extends JFrame { //加载界面方法 frame窗体
         //用户选择登录状态
         JComboBox stateJC =new JComboBox();
         //登录状态添加监听事件
+
+        //存储用户状态
+
         stateJC.addItemListener(new ItemListener() {
             @Override
             public void itemStateChanged(ItemEvent e) {
+                //当下拉框值发生改变的时候触发
                 if(e.getStateChange()==1){
-                    System.out.println("hello");
+                    //System.out.println(stateJC.getSelectedIndex()+1);
+                    //System.out.println(stateJC.getSelectedItem());
+
+                    state=stateJC.getSelectedIndex()+1; //把改变的状态编号放入用户装填
+
                 }
             }
         });
@@ -124,7 +133,14 @@ public class LoginJF extends JFrame { //加载界面方法 frame窗体
            // */
 
                 UserInfo userInfo =userDao.login(username,password);//通过userdao对象调用它的登陆验证方法
+
             //判断用户是否登录成功
+
+
+
+
+
+
                 if(userInfo==null){
                     JOptionPane.showMessageDialog(LoginJF.this,"用户名或密码错误");
                 }
@@ -136,6 +152,11 @@ public class LoginJF extends JFrame { //加载界面方法 frame窗体
                     qqMainJF.loadJF();
                     that.setVisible(false);
                     */
+                    userInfo.setStateid(state);//当前登陆用户的状态
+                    //把数据库中用户状态进行改变  通过用户的账户修改他在数据库中的状态
+                    userDao.updateUserById(userInfo.getId()+"",state);
+
+
                     //qq主界面,当我们登陆成功跳转到主界面到时候把当前用户信息传递给主界面
                     QQMainJFrame qqMainJFrame =new QQMainJFrame(userInfo);
                     qqMainJFrame.setVisible(true);

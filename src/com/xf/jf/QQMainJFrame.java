@@ -9,6 +9,7 @@ import javax.swing.*;
 import javax.swing.border.LineBorder;
 
 import com.xf.beans.UserInfo;
+import com.xf.dao.UserDao;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -55,6 +56,7 @@ public class QQMainJFrame extends javax.swing.JFrame implements WindowListener {
 	JMenuItem jMenuItem2;//删除所有好友
 		//当前登录用户对象
 	private UserInfo userInfo ;
+	UserDao userDao =new UserDao();
 	/**
 	 * Auto-generated main method to display this JFrame
 	 */
@@ -125,9 +127,44 @@ public class QQMainJFrame extends javax.swing.JFrame implements WindowListener {
 
 					jPanel1.add(state);
 					state.setBounds(111, 75, 237, 20);
-					state.setText("在线");
-					state.setFont(new Font("微软雅黑", Font.PLAIN, 20));
-					state.setForeground(Color.green);
+					//根据用户选择状态显示不同用户状态
+					if(this.userInfo.getStateid()==8){
+						state.setText("写代码");
+						state.setForeground(Color.red);
+					}else if(this.userInfo.getStateid()==7){
+						state.setText("忙碌");
+						state.setForeground(Color.red);
+					}
+					else if(this.userInfo.getStateid()==6){
+						state.setText("离开");
+						state.setForeground(Color.LIGHT_GRAY);
+					}
+					else if(this.userInfo.getStateid()==5){
+						state.setText("隐身");
+						state.setForeground(Color.gray);
+					}
+					else if(this.userInfo.getStateid()==4){
+						state.setText("Q我吧");
+						state.setForeground(Color.ORANGE);
+					}
+					else if(this.userInfo.getStateid()==3){
+						state.setText("工作中");
+						state.setForeground(Color.red);
+					}
+					else if(this.userInfo.getStateid()==2){
+						state.setText("在线");
+						state.setForeground(Color.green);
+					}
+					else if(this.userInfo.getStateid()==1){
+						state.setText("下线");
+						state.setForeground(Color.gray);
+					}
+
+
+
+
+					//state.setFont(new Font("微软雅黑", Font.PLAIN, 20));
+
 				}
 
 
@@ -246,7 +283,9 @@ public class QQMainJFrame extends javax.swing.JFrame implements WindowListener {
 		int i=JOptionPane.showConfirmDialog(QQMainJFrame.this,"您是否确定要关闭盗版OICQ","",JOptionPane.OK_CANCEL_OPTION);
 		//根据选项关闭qq主界面，
 		if(i==0){
+			userDao.updateUserById(this.userInfo.getId()+"",1);//强制下线
 			System.exit(0);//退出程序
+
 		}
 	}
 

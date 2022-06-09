@@ -65,6 +65,25 @@ public class UserDao {
         }
         return null;
     }
+    //通过用户账户修改状态，id用户账户，state修改状态值
+    public void updateUserById(String id,int state){
+        //
+       Connection conn= DBManager.getConn();
+        try {
+         qr.execute(conn,"update userinfo set stateid=? where id =?",state,id);
+         //System.out.println(state);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }finally {
+            try {
+                conn.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+
+    }
 
     public static void main(String[] args) {
        // UserDao userDao =new UserDao();
