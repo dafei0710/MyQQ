@@ -141,7 +141,17 @@ public class QQMainJFrame extends javax.swing.JFrame implements WindowListener, 
 					jLabel2.add(unameJl);
 					*/
 				}
-
+				//添加好友  按昵称查询一次多个，按账号查询唯一性
+				JButton addBtn =new JButton("添加好友");
+				addBtn.setBounds(200,30,100,26);
+				addBtn.addActionListener(new ActionListener() {
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						AddFriendJF addFriendJF =new AddFriendJF();
+						addFriendJF.loadJF();
+					}
+				});
+				jPanel1.add(addBtn);
 
 				{
 				
@@ -384,6 +394,7 @@ public class QQMainJFrame extends javax.swing.JFrame implements WindowListener, 
 								JLabel stae=new JLabel();
 								if(info.getStateid()==8){
 									//stae="写代码";
+
 									stae.setText("写代码");
 									stae.setForeground(Color.red);
 
@@ -549,6 +560,7 @@ public class QQMainJFrame extends javax.swing.JFrame implements WindowListener, 
 		//设置透明度
 		friendJL.setOpaque(true);
 		friendJL.setBackground(new Color(242,242,242));//MacOs 设置java JtextFiled文本框为透明色
+
 		//设置字体颜色
 		friendJL.setForeground(Color.BLUE);
 	}

@@ -1,6 +1,8 @@
 package com.xf.jf;
+import com.xf.beans.Anam;
 import com.xf.beans.StateInfo;
 import com.xf.beans.UserInfo;
+import com.xf.dao.AnamDao;
 import com.xf.dao.StateDao;
 import com.xf.dao.UserDao;
 
@@ -18,8 +20,13 @@ public class LoginJF extends JFrame { //加载界面方法 frame窗体
     int w=429,h=350;//设置宽度高度
     UserDao userDao =new UserDao();//用户持久层对象
     StateDao stateDao =new StateDao();//状态持久层对象
+    AnamDao anamDao =new AnamDao();
+    static List<Anam> anams;
+
+
+    JCheckBox remJC;
      int state =1;
-     static JTextField unameJT ;
+     static JComboBox unameJT ;
      static JPasswordField pwdJT;
     public LoginJF(){
         //第一步给窗体添加组建容器
@@ -45,7 +52,7 @@ public class LoginJF extends JFrame { //加载界面方法 frame窗体
         bgJP.add(unameJl);
 
         //用户名输入框
-        unameJT=new JTextField("1");
+        unameJT=new JComboBox();
         unameJT.setBounds(150,170,150,26);
         unameJT.setFont(new Font("微软雅黑",Font.PLAIN,12));//调整字体大小
         unameJT.addKeyListener(new KeyAdapter() {
@@ -57,7 +64,50 @@ public class LoginJF extends JFrame { //加载界面方法 frame窗体
                 }
             }
         });
+        //设置下拉列表可以输入内容
+        unameJT.setEditable(true);//设置可以编辑
+        //把数据查询出来
+        Vector v1 =new Vector<>();
+        anams= anamDao.getQAllAnams();//查询所有登陆的用户账号
+        //转化为集合数据
+        for (Anam anam:anams) {
+            v1.add(anam.getQq());
+        }
+        //放入下拉框的数据源中
+        DefaultComboBoxModel model =new DefaultComboBoxModel<>(v1);
+        //列表加载
+        unameJT.setModel(model);
+        //添加监听
+        unameJT.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+
+                //
+                if(e.getStateChange()==1){
+                  //判断用户是否勾选记住密码
+                    int index=unameJT.getSelectedIndex();//可能对值为-1
+                    if(index>=0){
+                        Anam anam=anams.get(unameJT.getSelectedIndex());
+                        //System.out.println(anam);
+                        if(anam.getStaid()==1){
+
+                            pwdJT.setText(anam.getPwd());
+                            remJC.setSelected(true);
+
+                        }
+                        else if(anam.getStaid()==0){
+                            pwdJT.setText("");
+                            remJC.setSelected(false);
+                        }
+                    }
+
+
+                }
+            }
+        });
+
         bgJP.add(unameJT);
+
 
 
         //用户选择登录状态
@@ -93,7 +143,7 @@ public class LoginJF extends JFrame { //加载界面方法 frame窗体
         stateJC.setModel(aMoudel);
         stateJC.setSelectedIndex(1);
         stateJC.setBounds(300,170,100,26);//
-
+        //stateJC.setEditable(true);//设置可以编辑
         bgJP.add(stateJC);
 
 
@@ -111,18 +161,19 @@ public class LoginJF extends JFrame { //加载界面方法 frame窗体
         pwdJl.setFont(new Font("微软雅黑",Font.BOLD,14));//调整字体大小
         bgJP.add(pwdJl);
         //JPasswordField pwdJT=new JPasswordField();//密码输入框
-        pwdJT=new JPasswordField("111111");//密码输入框
+        pwdJT=new JPasswordField();//密码输入框
         pwdJT.setBounds(150,210,150,26);
         pwdJT.setFont(new Font("微软雅黑",Font.PLAIN,12));//调整字体大小
         pwdJT.addKeyListener(new KeyAdapter() {
             @Override
-            public void keyTyped(KeyEvent e) {
+            public void keyTyped(KeyEvent e) {//监听回车事件，回车登陆
                 super.keyTyped(e);
                 if(e.getKeyChar()==KeyEvent.VK_ENTER){
                     loginEnter();
                 }
             }
         });
+
         bgJP.add(pwdJT);
 
         JLabel findPwdJT =new JLabel("找回密码");
@@ -137,6 +188,13 @@ public class LoginJF extends JFrame { //加载界面方法 frame窗体
             }
         });
         bgJP.add(findPwdJT);
+        //记住密码复选框
+        remJC=new JCheckBox("记住密码");
+        remJC.setBounds(150,230,80,32);
+        remJC.setFont(new Font("微软雅黑",Font.PLAIN,10));//调整字体大小
+        remJC.setForeground(Color.gray);
+        bgJP.add(remJC);
+
 
         //登录按钮
         JButton loginBtn = new JButton("登   陆"); //登录按钮
@@ -208,7 +266,7 @@ public class LoginJF extends JFrame { //加载界面方法 frame窗体
         //弹窗效果
         //JOptionPane.showMessageDialog(LoginJF.this,"登录成功");
         //获取用户输入到用户名和密码
-        String username = unameJT.getText();
+        String username = unameJT.getSelectedItem().toString();//使用下拉框获取用户账号
         String password = pwdJT.getText();
         //JOptionPane.showMessageDialog(LoginJF.this,"您输入的用户名为："+ username + ",密码为"+password);
 
@@ -245,12 +303,47 @@ public class LoginJF extends JFrame { //加载界面方法 frame窗体
             userDao.updateUserById(userInfo.getId() + "", state);
 
 
+
+            //Anam anam=anams.get(unameJT.getSelectedIndex());
+            Anam anam =anamDao.getAnamById(Integer.parseInt(username));
+            //登陆成功之后判断是否勾选记住密码
+            //if(anamDao.getAnamById(anam.getQq())==null){
+            if(anam==null){
+                //当勾选记住密码
+                if(remJC.isSelected()==true) {
+                    anamDao.addAnam(Integer.parseInt(username), password, 1);
+                }else{//未勾选记住密码
+                    anamDao.addAnam(Integer.parseInt(username), password, 0);
+                }
+            }
+            else{
+                //如果存在 根据选择师傅记住密码 修改用户状态
+                if(remJC.isSelected()==true){
+                    //如果表中存在数据，再次登陆勾选记住密码 只修改记住密码状态
+                    anamDao.updateAnamById(Integer.parseInt(username),1);
+                   //System.out.println(anam.getPwd());
+
+                }else{
+                    anamDao.updateAnamById(Integer.parseInt(username),0);
+                }
+
+
+            }
+
+
+
+
+
             //qq主界面,当我们登陆成功跳转到主界面到时候把当前用户信息传递给主界面
             QQMainJFrame qqMainJFrame = new QQMainJFrame(userInfo);
             qqMainJFrame.setVisible(true);
             that.setVisible(false);
         }
     }
+
+
+
+
     public void loadJF(){
 
         this.setVisible(true);//设置本窗体显示 true可见 false不可见
@@ -260,9 +353,28 @@ public class LoginJF extends JFrame { //加载界面方法 frame窗体
         this.setTitle("盗版OICQ");//添加标题
         this.setIconImage(new ImageIcon(this.getClass().getResource("../images/1.jpg")).getImage());//设置窗体logo
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);//界面关闭之后，同步关闭程序进程
+        //初始化数据
+        //获取到默认账户
+        if(anams.size()>0){//账号数量大于0报错问题
+            Anam anam = anams.get(0);
+            //对默认账户进行判断，如果默认账户记住密码直接赋值，如果没有记住密码，就不写
+            if(anam.getStaid()==1){
+                pwdJT.setText(anam.getPwd());
+                remJC.setSelected(true);
+            }
 
-    }
-    public void btnclick(){
+        }
+        //文本框事件 内容只要发生变化 就会触发
+        //失去焦点 触发
+       unameJT.addItemListener(new ItemListener() {
+           @Override
+           public void itemStateChanged(ItemEvent e) {
+               //System.out.println("123");
+
+               pwdJT.setText("");
+           }
+       });
+
 
     }
 
