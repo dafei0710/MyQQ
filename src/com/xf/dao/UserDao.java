@@ -122,6 +122,27 @@ public class UserDao {
 
     }
 
+    public UserInfo getUserByNickName(int id,String NickName){
+        //通过工具类去获取数据库连接
+        Connection conn = DBManager.getConn();
+        //qr执行查询连接 sql语句
+        try {
+            return  qr.query(conn,"select * from userinfo where id=? and nickname=? ",new BeanHandler<>(UserInfo.class),id,NickName);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }finally {
+            try {
+                conn.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return null;
+    }
+
+
+
 
     public static void main(String[] args) {
        // UserDao userDao =new UserDao();

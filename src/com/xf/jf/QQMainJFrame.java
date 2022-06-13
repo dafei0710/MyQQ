@@ -21,6 +21,7 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.*;
+import java.io.Flushable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,7 +37,7 @@ import java.util.List;
  * THIS MACHINE, SO JIGLOO OR THIS CODE CANNOT BE USED
  * LEGALLY FOR ANY CORPORATE OR COMMERCIAL PURPOSE.
  */
-public class QQMainJFrame extends javax.swing.JFrame implements WindowListener {
+public class QQMainJFrame extends javax.swing.JFrame implements WindowListener, MouseListener {
 
 	private JPanel jPanel1;
 	private JButton jButton1;
@@ -60,6 +61,7 @@ public class QQMainJFrame extends javax.swing.JFrame implements WindowListener {
 	JMenuItem jMenuItem2;//删除所有好友
 		//当前登录用户对象
 	private UserInfo userInfo ;
+	static JLabel state;
 	UserDao userDao =new UserDao();
 	FriendsDao friendsDao =new FriendsDao();
 
@@ -81,7 +83,7 @@ public class QQMainJFrame extends javax.swing.JFrame implements WindowListener {
 		super();
 		this.userInfo=userInfo;
 		initGUI();
-		this.setResizable(false);//窗口大小不变
+		this.setResizable(false);//窗口大小
 		//当窗口关闭的时候，不操作
 		this.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		//this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);//界面关闭之后，同步关闭程序进程
@@ -142,7 +144,9 @@ public class QQMainJFrame extends javax.swing.JFrame implements WindowListener {
 
 
 				{
-					JLabel state = new JLabel();
+				
+					
+					state = new JLabel();
 
 					jPanel1.add(state);
 					state.setBounds(111, 68, 50, 20);//111，60，237，20
@@ -178,11 +182,12 @@ public class QQMainJFrame extends javax.swing.JFrame implements WindowListener {
 						state.setText("下线");
 						state.setForeground(Color.gray);
 					}
-
-
+					
 					state.setFont(new Font("微软雅黑", Font.PLAIN, 12));
 
 				}
+
+				
 				{
 					//让默认焦点不在文本输入框中,设置在组建容器中
 					jPanel1.setFocusable(true);
@@ -190,7 +195,7 @@ public class QQMainJFrame extends javax.swing.JFrame implements WindowListener {
 					//sign.setBounds(144,23,100,28);
 					//sign.setBounds(30,55,237,20);//可以正常
 					sign.setOpaque(false);//设置组件透明
-					sign.setBounds(30,55,237,22);
+					sign.setBounds(38,55,237,22);
 					sign.setBackground(new Color(0,0,0,0));//MacOs 设置java JtextFiled文本框为透明色
 					//MatteBorder mb =new MatteBorder(0, 0, 0, 0,Color.cyan);
 					sign.setFont(new Font("微软雅黑",Font.PLAIN,12));//调整字体大小
@@ -216,14 +221,14 @@ public class QQMainJFrame extends javax.swing.JFrame implements WindowListener {
 
 
 
-					sign.setForeground(Color.red);
+					sign.setForeground(Color.CYAN);
 					jLabel2.add(sign);
 
 				}
 
 
 				{
-					JLabel bg = new JLabel();
+					JLabel bg = new JLabel();//头部背景，迪士尼烟花背景
 					jPanel1.add(bg);
 					bg.setIcon(new ImageIcon(this.getClass().getResource("../images/bj01.gif")));
 					bg.setBounds(-20, -25, 450, 280);//x,y237，20，，，450，280
@@ -298,10 +303,15 @@ public class QQMainJFrame extends javax.swing.JFrame implements WindowListener {
 							//new GridLayout(行数, 列数, 水平间距,垂直间距);
 							GridLayout jPanel6Layout = new GridLayout(50, 1, 0,10);
 
+							////通过当前登陆用户账号 查询好友的账号，只显示账号不显示昵称
+							////this.userInfo.getId();0-无数个好友
+
+
 							//单表查询
 							//主窗体有当前登陆的账号  this.userinfo.getid()
 
 							//通过当前账号查询好友的账号
+							//List<FriendsInfo> friends =friendsDao.getFrendsByHostId(this.userInfo.getId());;
 							List<FriendsInfo> friends =friendsDao.getFriends(this.userInfo.getId());
 							//System.out.println(this.userInfo.getId());
 
@@ -318,9 +328,116 @@ public class QQMainJFrame extends javax.swing.JFrame implements WindowListener {
 							for(int i=0;i<jls.length;i++){
 								//new JLabel(文本,图片地址,放的位置);
 								UserInfo info = userDao.getUserById(friends.get(i).getFriendid());//获取到当前好友的信息，并加载到界面
-								//System.out.println(friends.get(i).getFriendid());
-								jls[i] = new JLabel(info.getNickname(), new ImageIcon(this.getClass().getResource("../images/QQfaces/LargeImage/12.jpg")), JLabel.LEFT);
+								//UserInfo info =friendsDao.getFrendsByHostId(friends.get(i).getFriendid());
+								//System.out.println(friends.get(i).getFriendid());         //        .getResource("../images/QQfaces/LargeImage/"+this.userInfo.getFaceid()+".jpg"));
+
+								//判断用户是否在线
+								//定义图片变量
+								String icon="";
+								//icon="../images/QQfaces/LargeImage/"+info.getFaceid()+".png";
+
+
+								if(info.getStateid()==1){//判断用户是否在线
+									//离线/Users/dafei/MyQQ/src/com/xf/images/QQfaces/
+									icon="../images/QQfaces/lixianImage/"+info.getFaceid()+".png";
+								}else{
+									//在线
+									icon="../images/QQfaces/LargeImage/"+info.getFaceid()+".png";
+								}
+//
+
+
+//								if(info.getStateid()==8){
+//									state.setText("写代码");
+//									state.setForeground(Color.red);
+//								}else if(info.getStateid()==7){
+//									state.setText("忙碌");
+//									state.setForeground(Color.red);
+//								}
+//								else if(info.getStateid()==6){
+//									state.setText("离开");
+//									state.setForeground(Color.LIGHT_GRAY);
+//								}
+//								else if(info.getStateid()==5){
+//									state.setText("隐身");
+//									state.setForeground(Color.gray);
+//								}
+//								else if(info.getStateid()==4){
+//									state.setText("Q我吧");
+//									state.setForeground(Color.ORANGE);
+//								}
+//								else if(info.getStateid()==3){
+//									state.setText("工作中");
+//									state.setForeground(Color.red);
+//								}
+//								else if(info.getStateid()==2){
+//									state.setText("在线");
+//									state.setForeground(Color.green);
+//								}
+//								else if(info.getStateid()==1){
+//									state.setText("下线");
+//									state.setForeground(Color.gray);
+//								}
+//
+//								state.setFont(new Font("微软雅黑", Font.PLAIN, 12));
+								//状态
+								JLabel stae=new JLabel();
+								if(info.getStateid()==8){
+									//stae="写代码";
+									stae.setText("写代码");
+									stae.setForeground(Color.red);
+
+								}else if(info.getStateid()==7){
+									stae.setText("忙碌");
+									stae.setForeground(Color.red);
+								}
+								else if(info.getStateid()==6){
+									stae.setText("离开");
+									stae.setForeground(Color.LIGHT_GRAY);
+								}
+								else if(info.getStateid()==5){
+									stae.setText("隐身");
+									stae.setForeground(Color.gray);
+								}
+								else if(info.getStateid()==4){
+									stae.setText("Q我吧");
+									stae.setForeground(Color.ORANGE);
+								}
+								else if(info.getStateid()==3){
+									stae.setText("工作中");
+
+									stae.setForeground(Color.red);
+								}
+								else if(info.getStateid()==2){
+									stae.setText("在线");
+
+									stae.setForeground(Color.green);
+								}
+								else if(info.getStateid()==1){
+									stae.setText("下线");
+
+									stae.setForeground(Color.gray);
+
+								}
+
+								//
+								jls[i] = new JLabel(info.getNickname()+"("+friends.get(i).getFriendid()+")"+"["+ stae.getText()+"]"+" "+info.getSign(), new ImageIcon(this.getClass().getResource(icon)), JLabel.LEFT);
+								//jls[i] = new JLabel(info.getNickname()+"("+friends.get(i).getFriendid()+")", new ImageIcon(this.getClass().getResource(icon)), JLabel.LEFT);
+
+								//System.out.println(this.userInfo.getFaceid());
+								//监听鼠标经过好与列表
+
+								jls[i].addMouseListener(this);
 								jPanel6.add(jls[i]);
+//								jls[i].addMouseListener(new MouseAdapter() {
+//									@Override
+//									public void mouseClicked(MouseEvent e) {
+////										super.mouseClicked(e);
+//										//JOptionPane.showMessageDialog(QQMainJFrame.this,"test");
+//
+//									}
+//								});
+
 							}
 							jPanel6.setLayout(jPanel6Layout);
 
@@ -405,5 +522,42 @@ public class QQMainJFrame extends javax.swing.JFrame implements WindowListener {
 	@Override
 	public void windowDeactivated(WindowEvent e) {
 
+	}
+
+
+
+//
+	@Override
+	public void mouseClicked(MouseEvent e) {
+
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {//鼠标划入的时候触发
+	//获取事件源，谁触发，获取谁
+		JLabel friendJL=(JLabel) e.getSource();
+		//设置透明度
+		friendJL.setOpaque(true);
+		friendJL.setBackground(new Color(242,242,242));//MacOs 设置java JtextFiled文本框为透明色
+		//设置字体颜色
+		friendJL.setForeground(Color.BLUE);
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {//鼠标退出的时候触发
+	//
+		JLabel friendJL=(JLabel) e.getSource();
+		friendJL.setOpaque(false);
+		friendJL.setForeground(Color.black);
 	}
 }

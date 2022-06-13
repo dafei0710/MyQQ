@@ -19,6 +19,8 @@ public class LoginJF extends JFrame { //加载界面方法 frame窗体
     UserDao userDao =new UserDao();//用户持久层对象
     StateDao stateDao =new StateDao();//状态持久层对象
      int state =1;
+     static JTextField unameJT ;
+     static JPasswordField pwdJT;
     public LoginJF(){
         //第一步给窗体添加组建容器
         JPanel bgJP =new JPanel();//容器创建
@@ -43,9 +45,18 @@ public class LoginJF extends JFrame { //加载界面方法 frame窗体
         bgJP.add(unameJl);
 
         //用户名输入框
-        JTextField unameJT=new JTextField();
+        unameJT=new JTextField("1");
         unameJT.setBounds(150,170,150,26);
         unameJT.setFont(new Font("微软雅黑",Font.PLAIN,12));//调整字体大小
+        unameJT.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                super.keyTyped(e);
+                if(e.getKeyChar()==KeyEvent.VK_ENTER){
+                    loginEnter();
+                }
+            }
+        });
         bgJP.add(unameJT);
 
 
@@ -100,13 +111,36 @@ public class LoginJF extends JFrame { //加载界面方法 frame窗体
         pwdJl.setFont(new Font("微软雅黑",Font.BOLD,14));//调整字体大小
         bgJP.add(pwdJl);
         //JPasswordField pwdJT=new JPasswordField();//密码输入框
-        JPasswordField pwdJT=new JPasswordField("111111");//密码输入框
+        pwdJT=new JPasswordField("111111");//密码输入框
         pwdJT.setBounds(150,210,150,26);
         pwdJT.setFont(new Font("微软雅黑",Font.PLAIN,12));//调整字体大小
+        pwdJT.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                super.keyTyped(e);
+                if(e.getKeyChar()==KeyEvent.VK_ENTER){
+                    loginEnter();
+                }
+            }
+        });
         bgJP.add(pwdJT);
+
+        JLabel findPwdJT =new JLabel("找回密码");
+        findPwdJT.setBounds(310,210,100,26);
+        findPwdJT.setFont(new Font("微软雅黑",Font.PLAIN,14));//调整字体大小
+        findPwdJT.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+//                super.mouseClicked(e);
+                QQMainJF qqMainJF =new QQMainJF();
+                qqMainJF.loadJF();
+            }
+        });
+        bgJP.add(findPwdJT);
+
         //登录按钮
         JButton loginBtn = new JButton("登   陆"); //登录按钮
-        loginBtn.setBounds(150,250,150,32);
+        loginBtn.setBounds(150,255,150,32);
         loginBtn.setFont(new Font("微软雅黑",Font.PLAIN,14));//调整字体大小
 
         //添加点击事件
@@ -114,62 +148,17 @@ public class LoginJF extends JFrame { //加载界面方法 frame窗体
             //监听按钮
             @Override
             public void actionPerformed(ActionEvent e) {
-                //弹窗效果
-                //JOptionPane.showMessageDialog(LoginJF.this,"登录成功");
-                //获取用户输入到用户名和密码
-               String username= unameJT.getText();
-               String password =pwdJT.getText();
-               //JOptionPane.showMessageDialog(LoginJF.this,"您输入的用户名为："+ username + ",密码为"+password);
-
-
-            //判断用户名和密码为空的情况
-            if(username.trim().length()==0||password.trim().length()==0){
-                JOptionPane.showMessageDialog(LoginJF.this,"用户名或密码不能为空");
-                return;
-            }
-          // /* 判断密码复杂度，方便测试暂不写
-            if(password.trim().length()<6){
-                JOptionPane.showMessageDialog(LoginJF.this,"密码不能小于6位数");
-                return;
-            }
-           // */
-
-                UserInfo userInfo =userDao.login(username,password);//通过userdao对象调用它的登陆验证方法
-
-            //判断用户是否登录成功
-
-
-
-
-
-
-                if(userInfo==null){
-                    JOptionPane.showMessageDialog(LoginJF.this,"用户名或密码错误");
-                }
-                else{
-                    JOptionPane.showMessageDialog(LoginJF.this,"登录成功！");
-
-                    /*
-                    QQMainJF qqMainJF =new QQMainJF();
-                    qqMainJF.loadJF();
-                    that.setVisible(false);
-                    */
-                    userInfo.setStateid(state);//当前登陆用户的状态
-                    //把数据库中用户状态进行改变  通过用户的账户修改他在数据库中的状态
-                    userDao.updateUserById(userInfo.getId()+"",state);
-
-
-                    //qq主界面,当我们登陆成功跳转到主界面到时候把当前用户信息传递给主界面
-                    QQMainJFrame qqMainJFrame =new QQMainJFrame(userInfo);
-                    qqMainJFrame.setVisible(true);
-                    that.setVisible(false);
+               loginEnter();
 
                 }
 
 
-            }
+
         });
         bgJP.add(loginBtn);
+
+
+
 
 
         //注册账号
@@ -215,11 +204,58 @@ public class LoginJF extends JFrame { //加载界面方法 frame窗体
         bgJP.add(registerJL);
     }
 
+    public void loginEnter() {
+        //弹窗效果
+        //JOptionPane.showMessageDialog(LoginJF.this,"登录成功");
+        //获取用户输入到用户名和密码
+        String username = unameJT.getText();
+        String password = pwdJT.getText();
+        //JOptionPane.showMessageDialog(LoginJF.this,"您输入的用户名为："+ username + ",密码为"+password);
+
+
+        //判断用户名和密码为空的情况
+        if (username.trim().length() == 0 || password.trim().length() == 0) {
+            JOptionPane.showMessageDialog(LoginJF.this, "用户名或密码不能为空");
+            return;
+        }
+        // /* 判断密码复杂度，方便测试暂不写
+        if (password.trim().length() < 6) {
+            JOptionPane.showMessageDialog(LoginJF.this, "密码不能小于6位数");
+            return;
+        }
+        // */
+
+        UserInfo userInfo = userDao.login(username, password);//通过userdao对象调用它的登陆验证方法
+
+        //判断用户是否登录成功
+
+
+        if (userInfo == null) {
+            JOptionPane.showMessageDialog(LoginJF.this, "用户名或密码错误");
+        } else {
+            //JOptionPane.showMessageDialog(LoginJF.this,"登录成功！");
+            //JOptionPane.showConfirmDialog(LoginJF.this,"登录成功！");
+                    /*
+                    QQMainJF qqMainJF =new QQMainJF();
+                    qqMainJF.loadJF();
+                    that.setVisible(false);
+                    */
+            userInfo.setStateid(state);//当前登陆用户的状态
+            //把数据库中用户状态进行改变  通过用户的账户修改他在数据库中的状态
+            userDao.updateUserById(userInfo.getId() + "", state);
+
+
+            //qq主界面,当我们登陆成功跳转到主界面到时候把当前用户信息传递给主界面
+            QQMainJFrame qqMainJFrame = new QQMainJFrame(userInfo);
+            qqMainJFrame.setVisible(true);
+            that.setVisible(false);
+        }
+    }
     public void loadJF(){
 
         this.setVisible(true);//设置本窗体显示 true可见 false不可见
         this.setSize(w,h);//设置窗体的显示大小
-        this.setResizable(true);//设置窗体是否拉伸
+        this.setResizable(false);//设置窗体是否拉伸
         this.setLocationRelativeTo(null);//让窗体居中显示
         this.setTitle("盗版OICQ");//添加标题
         this.setIconImage(new ImageIcon(this.getClass().getResource("../images/1.jpg")).getImage());//设置窗体logo
@@ -230,9 +266,14 @@ public class LoginJF extends JFrame { //加载界面方法 frame窗体
 
     }
 
+
+
+
     public static void main(String[] args){//程序入口
         LoginJF loginJF=new LoginJF();//创建窗体时使用
         loginJF.loadJF();
+
+
 
     }
 

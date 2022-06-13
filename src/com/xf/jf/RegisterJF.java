@@ -65,7 +65,8 @@ public class RegisterJF extends JFrame {
         bgJP.add(nickJT);
 
         //密码
-        JTextField pwdJT =new JTextField("  密码");
+        JPasswordField pwdJT =new JPasswordField("  密码");
+        pwdJT.setEchoChar((char)0);//设置铭明文显示
         pwdJT.setBounds(600,320,350,50);
         pwdJT.setFont(new Font("宋体",Font.BOLD,22));
         pwdJT.setForeground(Color.darkGray);
@@ -76,6 +77,7 @@ public class RegisterJF extends JFrame {
                 //获取焦点
                 //当用户没有输入的时候 文本框获取到焦点清空文本输入框
                 if(pwdJT.getText().trim().equals("密码")){
+                    pwdJT.setEchoChar('*');
                     pwdJT.setText("");//清空文本框内容
                     pwdJT.setForeground(Color.black);//设置文字颜色
                 }
@@ -85,7 +87,9 @@ public class RegisterJF extends JFrame {
                 //失去焦点
                 //文本框为空，文本框失去焦点复原文本输入框
                 if(pwdJT.getText().trim().equals("")){
+                    pwdJT.setEchoChar((char)0);
                     pwdJT.setText("  密码");//复原文本框内容
+
                     pwdJT.setForeground(Color.darkGray);//设置文字颜色
                 }
 
