@@ -29,7 +29,7 @@ public class DBManager {
         try {
             //connection
             Connection connection = DriverManager.getConnection(URL,USERNAME,PASSWORD);
-            System.out.println(connection);
+            //System.out.println(connection);
             return connection;
         } catch (SQLException e) {
             e.printStackTrace();

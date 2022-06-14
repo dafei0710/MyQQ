@@ -364,16 +364,68 @@ public class LoginJF extends JFrame { //加载界面方法 frame窗体
             }
 
         }
-        //文本框事件 内容只要发生变化 就会触发
+        //下拉框触发事件 内容只要发生变化 就会触发
         //失去焦点 触发
-       unameJT.addItemListener(new ItemListener() {
-           @Override
-           public void itemStateChanged(ItemEvent e) {
-               //System.out.println("123");
+        unameJT.getEditor().getEditorComponent().addKeyListener(new KeyListener() {//JComboBox下拉文本框触发事件
+            @Override
+            public void keyTyped(KeyEvent e) {
+               // System.out.println("111");
+            }
 
-               pwdJT.setText("");
-           }
-       });
+            @Override
+            public void keyPressed(KeyEvent e) {
+
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+                //判断输入字符的长度
+                String id=unameJT.getEditor().getItem().toString();
+                //System.out.println(id);
+                //如果第一个字符 如果是记住密码 把密码框直接清空，如果密码长度符合账户长度，检测这个还在那个户是否记住密码的功能
+                //if(id.length()==1||id.length()==0){
+                if(id.length()<=1){//1位或者0位清空
+                    pwdJT.setText("");
+                    remJC.setSelected(false);
+                }else if(id.length()>=4){
+                    //单纯集合对象
+
+                    //定义一个变量判断是否输入记住密码的账户
+                    boolean isHave=false;
+                    Anam anam1 = null;
+
+
+                    for (Anam anam: anams) {
+                        //当我们把集合中所有的记住密码的账户跟你输入的账户做对比 如果对比存在 说明你输入的账户是记住密码的 所以我们要直接记住登陆
+                        if(anam.getQq()==Integer.parseInt(id)){
+                           isHave=true;
+                           anam1=anam;
+                            break;//终止当前循环
+                        }
+
+                    }
+                    if(isHave==true){
+                        //判断输入账户记住密码是否勾选
+                        if(anam1.getStaid()==1){
+                            pwdJT.setText(anam1.getPwd());
+                            remJC.setSelected(true);
+                        }else{
+                            pwdJT.setText("");
+                            remJC.setSelected(false);
+                        }
+                    }
+                    else{
+                        pwdJT.setText("");
+                        remJC.setSelected(false);
+                    }
+                }
+
+            }
+        });
+
+
+
+
 
 
     }
