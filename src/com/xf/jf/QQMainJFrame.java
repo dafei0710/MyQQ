@@ -24,6 +24,7 @@ import java.awt.event.*;
 import java.io.Flushable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TreeMap;
 
 /**
  * This code was edited or generated using CloudGarden's Jigloo
@@ -37,7 +38,7 @@ import java.util.List;
  * THIS MACHINE, SO JIGLOO OR THIS CODE CANNOT BE USED
  * LEGALLY FOR ANY CORPORATE OR COMMERCIAL PURPOSE.
  */
-public class QQMainJFrame extends javax.swing.JFrame implements WindowListener, MouseListener {
+public class QQMainJFrame extends javax.swing.JFrame implements WindowListener, MouseListener,Runnable{
 
 	private JPanel jPanel1;
 	private JButton jButton1;
@@ -90,7 +91,7 @@ public class QQMainJFrame extends javax.swing.JFrame implements WindowListener, 
 		this.setIconImage(new ImageIcon(this.getClass().getResource("../images/1.jpg")).getImage());//设置窗体logo
 		//添加关闭窗体按钮监听
 		this.addWindowListener(this);
-		this.setTitle("盗版OICQ");//添加标题
+		this.setTitle("盗版QQ");//添加标题
 
 
 	}
@@ -113,7 +114,7 @@ public class QQMainJFrame extends javax.swing.JFrame implements WindowListener, 
 				jPanel1.setPreferredSize(new java.awt.Dimension(394, 103));
 				{
 					jLabel1 = new JLabel();
-					ImageIcon image1 = new ImageIcon(this.getClass().getResource("../images/QQfaces/LargeImage/"+this.userInfo.getFaceid()+".jpg"));
+					ImageIcon image1 = new ImageIcon(this.getClass().getResource("../images/QQfaces/LargeImage/"+this.userInfo.getFaceid()+".png"));
 					//ImageIcon image1 = new ImageIcon("../images/1.jpg");
 					image1.setImage(image1.getImage().getScaledInstance(69, 66, Image.SCALE_DEFAULT));
 					jLabel1.setIcon(image1);
@@ -126,12 +127,16 @@ public class QQMainJFrame extends javax.swing.JFrame implements WindowListener, 
 					jPanel1.add(jLabel2);
 					jLabel2.setBounds(111, 13, 200, 75);//111,13,237,48,28
 
-					//
-
-
 					jLabel2.setText(this.userInfo.getNickname());//当前用户昵称赋值
+
+					//System.out.println(this.userInfo.getNickname()+"www");
 					jLabel2.setFont(new Font("微软雅黑", Font.BOLD, 20));
 					jLabel2.setForeground(Color.red);
+
+
+
+
+
 
 					/*
 					JLabel unameJl =new JLabel("生日快乐");
@@ -141,17 +146,7 @@ public class QQMainJFrame extends javax.swing.JFrame implements WindowListener, 
 					jLabel2.add(unameJl);
 					*/
 				}
-				//添加好友  按昵称查询一次多个，按账号查询唯一性
-				JButton addBtn =new JButton("添加好友");
-				addBtn.setBounds(200,30,100,26);
-				addBtn.addActionListener(new ActionListener() {
-					@Override
-					public void actionPerformed(ActionEvent e) {
-						AddFriendJF addFriendJF =new AddFriendJF();
-						addFriendJF.loadJF();
-					}
-				});
-				jPanel1.add(addBtn);
+
 
 				{
 				
@@ -263,7 +258,16 @@ public class QQMainJFrame extends javax.swing.JFrame implements WindowListener, 
 				getContentPane().add(jPanel2, BorderLayout.SOUTH);
 				jPanel2.setLayout(null);
 				jPanel2.setPreferredSize(new java.awt.Dimension(394, 40));
-				jLabel3 = new JLabel(new ImageIcon("images/FormImage/Search.jpg"));
+				jLabel3 = new JLabel(new ImageIcon(this.getClass().getResource("../images/searchh.jpg")));
+				//给lable添加点击事件
+				jLabel3.addMouseListener(new MouseAdapter() {
+					@Override
+					public void mouseClicked(MouseEvent e) {
+						AddFriendJF addFriendJF =new AddFriendJF(that.userInfo.getId());
+						addFriendJF.loadJF();
+					}
+				});
+
 				//jLabel3 = new JLabel(new ImageIcon("../images/1.jpg"));
 				//../images/1.jpg
 				jPanel2.add(jLabel3);
@@ -286,23 +290,64 @@ public class QQMainJFrame extends javax.swing.JFrame implements WindowListener, 
 					}
 					{
 						jPanel5 = new JPanel();
-						GridLayout jPanel5Layout = new GridLayout(2, 1);
-						jPanel5Layout.setColumns(1);
+						GridLayout jPanel5Layout = new GridLayout(2, 2);
+						jPanel5Layout.setColumns(2);
 						jPanel5Layout.setRows(2);
 						jPanel3.add(jPanel5, BorderLayout.SOUTH);
 						jPanel5.setLayout(jPanel5Layout);
-						jPanel5.setPreferredSize(new java.awt.Dimension(389, 75));
+						jPanel5.setPreferredSize(new java.awt.Dimension(389, 100));
 						{
 							jButton2 = new JButton();
 							jPanel5.add(jButton2);
 							jButton2.setText("\u964c\u751f\u4eba");
-							jButton2.setPreferredSize(new java.awt.Dimension(389, 31));
+							jButton2.setPreferredSize(new java.awt.Dimension(389, 25));
 						}
 						{
 							jButton3 = new JButton();
 							jPanel5.add(jButton3);
 							jButton3.setText("\u9ed1\u540d\u5355");
-							jButton3.setPreferredSize(new java.awt.Dimension(389, 33));
+							jButton3.setPreferredSize(new java.awt.Dimension(389, 25));
+						}
+						{
+							//添加好友  按昵称查询一次多个，按账号查询唯一性
+//							JButton addBtn =new JButton("添加好友");
+//							addBtn.setBounds(200,30,100,25);
+//							addBtn.addActionListener(new ActionListener() {
+//								@Override
+//								public void actionPerformed(ActionEvent e) {
+//									//添加好友界面加载 把当前用户的账户 传递到添加好友到界面去
+//
+//								}
+//							});
+//							jPanel5.add(addBtn);
+
+
+						}
+						{
+							{
+								JButton jButton4 = new JButton();
+								jPanel5.add(jButton4);
+								jButton4.setText("修改密码");
+								jButton4.setPreferredSize(new java.awt.Dimension(389, 25));
+
+//								findPwdJT.addMouseListener(new MouseAdapter() {
+//									@Override
+//									public void mouseClicked(MouseEvent e) {
+////                super.mouseClicked(e);
+//										QQMainJF qqMainJF =new QQMainJF();
+//										qqMainJF.loadJF();
+//									}
+//								});
+								jButton4.addActionListener(new ActionListener() {
+									@Override
+									public void actionPerformed(ActionEvent e) {
+										//JOptionPane.showMessageDialog(QQMainJFrame.this,"敬请期待，功能稍后上线");
+										UpdatePwd updatePwd = new UpdatePwd(userInfo.getId());
+										updatePwd.loadJF();
+									}
+								});
+							}
+
 						}
 					}
 					{
@@ -426,7 +471,6 @@ public class QQMainJFrame extends javax.swing.JFrame implements WindowListener, 
 								}
 								else if(info.getStateid()==1){
 									stae.setText("下线");
-
 									stae.setForeground(Color.gray);
 
 								}
@@ -434,20 +478,13 @@ public class QQMainJFrame extends javax.swing.JFrame implements WindowListener, 
 								//
 								jls[i] = new JLabel(info.getNickname()+"("+friends.get(i).getFriendid()+")"+"["+ stae.getText()+"]"+" "+info.getSign(), new ImageIcon(this.getClass().getResource(icon)), JLabel.LEFT);
 								//jls[i] = new JLabel(info.getNickname()+"("+friends.get(i).getFriendid()+")", new ImageIcon(this.getClass().getResource(icon)), JLabel.LEFT);
-
+								System.out.println(info.getNickname());
 								//System.out.println(this.userInfo.getFaceid());
 								//监听鼠标经过好与列表
 
 								jls[i].addMouseListener(this);
 								jPanel6.add(jls[i]);
-//								jls[i].addMouseListener(new MouseAdapter() {
-//									@Override
-//									public void mouseClicked(MouseEvent e) {
-////										super.mouseClicked(e);
-//										//JOptionPane.showMessageDialog(QQMainJFrame.this,"test");
-//
-//									}
-//								});
+
 
 							}
 							jPanel6.setLayout(jPanel6Layout);
@@ -501,7 +538,7 @@ public class QQMainJFrame extends javax.swing.JFrame implements WindowListener, 
 	@Override
 	public void windowClosing(WindowEvent e) {
 		//提示是否关闭qq界面
-		int i=JOptionPane.showConfirmDialog(QQMainJFrame.this,"您是否确定要关闭盗版OICQ","",JOptionPane.OK_CANCEL_OPTION);
+		int i=JOptionPane.showConfirmDialog(QQMainJFrame.this,"您是否确定要关闭盗版QQ","",JOptionPane.OK_CANCEL_OPTION);
 		//根据选项关闭qq主界面，
 		if(i==0){
 			userDao.updateUserById(this.userInfo.getId()+"",1);//强制下线
@@ -540,7 +577,28 @@ public class QQMainJFrame extends javax.swing.JFrame implements WindowListener, 
 //
 	@Override
 	public void mouseClicked(MouseEvent e) {
+		//先判断鼠标是否是双击效果
+		if(e.getClickCount()==2){
+			//QQChatJFrame qqChatJFrame =new QQChatJFrame(userInfo,"","");
+			//先获取到我们点击到lable
+			 JLabel label= (JLabel) e.getSource();
+			 //从点击到lable中去获取好友到账户和昵称
+			String str =label.getText();
+//			System.out.println(str);
+			//通过获取到到字符得到好友账户以及昵称
+			String friendId=str.substring(str.indexOf("(")+1,str.indexOf(")"));
+			//System.out.println(friendId);
+			//获取好友昵称
+			String nickName=str.substring(0,str.indexOf("("));
+			System.out.println(nickName);
+			QQChatJFrame qqChatJFrame =new QQChatJFrame(userInfo,friendId,nickName);
+			qqChatJFrame.setVisible(true);
+			//创建线程
+			Thread thread =new Thread(qqChatJFrame);
+			//启动线程
+			thread.start();
 
+		}
 	}
 
 	@Override
@@ -571,5 +629,52 @@ public class QQMainJFrame extends javax.swing.JFrame implements WindowListener, 
 		JLabel friendJL=(JLabel) e.getSource();
 		friendJL.setOpaque(false);
 		friendJL.setForeground(Color.black);
+	}
+
+	@Override
+	public void run() {
+//		int t=0;
+//		while (true){
+//			System.out.println("刷新"+t+"次");t++;
+//			try {
+//				JPanel jPanel = new JPanel();
+//				GridLayout jPanelLayout = new GridLayout(50, 1, 0,10);
+//				List<FriendsInfo> friends=friendsDao.getFriends(this.userInfo.getId());
+//				JLabel[] jls = new JLabel[friends.size()];
+//
+//				for(int i=0;i<jls.length;i++){
+//					//new JLabel(文本,图片地址,放的位置);
+//					//获取到当前好友的信息
+//					UserInfo info=userDao.getUserById(friends.get(i).getFriendid());
+//					//判断好友是否在线
+//					//定义图片变量
+//					String icon ="";
+//					if(info.getStateid()==2){
+//						icon = "../images/QQfaces/lixianImage/"+info.getFaceid()+".png";
+//					}
+//					else {
+//						icon = "../images/QQfaces/LargeImage/"+info.getFaceid()+".png";
+//					}
+//
+//					jls[i] = new JLabel(info.getNickname()+"("+info.getId()+")", new ImageIcon(this.getClass().getResource(icon)), JLabel.LEFT);
+//					//监听鼠标经过好友列表
+//					jls[i].addMouseListener(this);
+//					jPanel.add(jls[i]);
+//					jPanel.setLayout(jPanelLayout);
+//					jScrollPane1.setViewportView(jPanel);
+//
+//				}
+//				//把jPopupMenu放到jsp1里
+//				jScrollPane1.setComponentPopupMenu(jPopupMenu);
+//				//把jPopupMenu放到jphy2里
+//				jPanel.setComponentPopupMenu(jPopupMenu);
+//
+//
+//				Thread.sleep(1000);
+//
+//			} catch (InterruptedException e) {
+//				e.printStackTrace();
+//			}
+//		}
 	}
 }

@@ -20,7 +20,7 @@ public class RegisterJF extends JFrame {
         bgJP.setLayout(null);
         this.getContentPane().add(bgJP); //把容器放入窗体
         //内容标题
-        JLabel title1 =new JLabel("欢迎注册盗版OICQ");
+        JLabel title1 =new JLabel("欢迎注册盗版QQ");
         title1.setFont(new Font("微软雅黑",Font.PLAIN,50));
         title1.setBounds(600,90,500,50);
         bgJP.add(title1);
@@ -56,12 +56,7 @@ public class RegisterJF extends JFrame {
 
             }
         });
-        nickJT.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                nickJT.setText("");
-            }
-        });
+
         bgJP.add(nickJT);
 
         //密码
@@ -71,6 +66,41 @@ public class RegisterJF extends JFrame {
         pwdJT.setFont(new Font("宋体",Font.BOLD,22));
         pwdJT.setForeground(Color.darkGray);
 
+
+        JLabel eyeIs =new JLabel();
+        eyeIs.setIcon(new ImageIcon(this.getClass().getResource("../images/eye.png")));//设置背景图
+        eyeIs.setBounds(965,333,39,24);
+        JLabel eyeIsClose =new JLabel();
+        eyeIsClose.setIcon(new ImageIcon(this.getClass().getResource("../images/eyeclose.png")));//设置背景图
+        eyeIsClose.setBounds(965,333,39,24);
+        eyeIs.setVisible(false);
+        eyeIs.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+//                super.mouseClicked(e);
+                eyeIsClose.setVisible(true);
+                eyeIs.setVisible(false);
+                
+                pwdJT.setEchoChar('*');
+
+            }
+        }
+        );
+
+        eyeIsClose.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+//                super.mouseClicked(e);
+                eyeIsClose.setVisible(false);
+                eyeIs.setVisible(true);
+                pwdJT.setEchoChar((char)0);//设置铭明文显示
+
+
+            }
+        });
+//        eyeIsClose.setVisible(true);
+        bgJP.add(eyeIs);
+        bgJP.add(eyeIsClose);
         pwdJT.addFocusListener(new FocusAdapter() {
             @Override
             public void focusGained(FocusEvent e) {
@@ -97,12 +127,7 @@ public class RegisterJF extends JFrame {
         });
 
         bgJP.add(pwdJT);
-        pwdJT.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                pwdJT.setText("");
-            }
-        });
+
         //同意协议
         JCheckBox isOk =new JCheckBox("我以阅读并同意相关服务条款和隐私政策");
         //isOk.setFont(new Font("微软雅黑",Font.PLAIN,14));
@@ -144,7 +169,7 @@ public class RegisterJF extends JFrame {
                     if(count==1){
                         //获取到注册到用户
                         UserInfo userInfo =  userDao.getRegisterUser();
-                        JOptionPane.showMessageDialog(RegisterJF.this,"盗版OICQ注册成功！您到账号为："+userInfo.getId()+"不要弄丢账号哦！");
+                        JOptionPane.showMessageDialog(RegisterJF.this,"盗版QQ注册成功！您到账号为："+userInfo.getId()+"不要弄丢账号哦！");
                         that.dispose();
                     }
                     else{
@@ -190,7 +215,7 @@ public class RegisterJF extends JFrame {
 
 
         this.setLocationRelativeTo(null);//让窗体居中显示
-        this.setTitle("盗版OICQ注册界面");//添加标题
+        this.setTitle("盗版QQ注册界面");//添加标题
         this.setIconImage(new ImageIcon(this.getClass().getResource("../images/1.jpg")).getImage());//设置窗体logo
         this.setResizable(true);//设置窗体是否拉伸
 

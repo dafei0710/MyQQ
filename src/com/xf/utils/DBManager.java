@@ -8,7 +8,9 @@ import java.sql.SQLException;
 public class DBManager {
     private static final String DRIVER = "com.mysql.cj.jdbc.Driver";
     //所连接的数据库地址
-    private static final String URL="jdbc:mysql://localhost:3306/qq?serverTimezone=GMT&useSSL=false";
+    //116.205.244.199
+    private static final String URL="jdbc:mysql://localhost:3306/qq?serverTimezone=Asia/Shanghai&useSSL=false";
+    //private static final String URL="jdbc:mysql://116.205.244.199:3306/qq?serverTimezone=GMT&useSSL=false";
     //用户名密码
     private static final String USERNAME="root";
     private static final String PASSWORD="admin123";

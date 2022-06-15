@@ -89,7 +89,7 @@ public class QQMainJF extends JFrame {//找回密码
         //this.setLocationRelativeTo(null);//让窗体居中显示
         this.setTitle("找回密码");//添加标题
         this.setIconImage(new ImageIcon(this.getClass().getResource("../images/1.jpg")).getImage());//设置窗体logo
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);//界面关闭之后，同步关闭程序进程
+        //this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);//界面关闭之后，同步关闭程序进程
     }
 
     public static void main(String[] args) {

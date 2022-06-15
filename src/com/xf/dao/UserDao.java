@@ -124,13 +124,16 @@ public class UserDao {
 
     public UserInfo getUserByNickName(int id,String NickName){
         //通过工具类去获取数据库连接
-        Connection conn = DBManager.getConn();
+
         //qr执行查询连接 sql语句
+        Connection conn = DBManager.getConn();
         try {
             return  qr.query(conn,"select * from userinfo where id=? and nickname=? ",new BeanHandler<>(UserInfo.class),id,NickName);
+            //System.out.println(state);
+
         } catch (SQLException e) {
             e.printStackTrace();
-        }finally {
+        } finally {
             try {
                 conn.close();
             } catch (SQLException e) {
@@ -150,5 +153,32 @@ public class UserDao {
       //  userDao.register("小甜甜","111111");
 
 
+    }
+
+    /**
+     *
+     *
+     * @param id
+     * @param update1Pwd
+     * @param update2Pwd
+     * @return
+     */
+    public UserInfo updatePwd(int id,  String update2Pwd) {
+        Connection conn = DBManager.getConn();
+        try {
+            int execute = qr.execute(conn, "update userinfo set   loginpwd =? where id =?",update2Pwd,id);
+            //System.out.println(state);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                conn.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return null;
     }
 }

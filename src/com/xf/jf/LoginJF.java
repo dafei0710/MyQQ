@@ -126,6 +126,7 @@ public class LoginJF extends JFrame { //加载界面方法 frame窗体
 
                     state=stateJC.getSelectedIndex()+1; //把改变的状态编号放入用户装填
 
+
                 }
             }
         });
@@ -143,6 +144,7 @@ public class LoginJF extends JFrame { //加载界面方法 frame窗体
         stateJC.setModel(aMoudel);
         stateJC.setSelectedIndex(1);
         stateJC.setBounds(300,170,100,26);//
+
         //stateJC.setEditable(true);//设置可以编辑
         bgJP.add(stateJC);
 
@@ -286,7 +288,10 @@ public class LoginJF extends JFrame { //加载界面方法 frame窗体
         UserInfo userInfo = userDao.login(username, password);//通过userdao对象调用它的登陆验证方法
 
         //判断用户是否登录成功
-
+        if(state==1){//下线状态不能登陆
+            JOptionPane.showMessageDialog(LoginJF.this,"下线状态不能登陆");
+            return;
+        }
 
         if (userInfo == null) {
             JOptionPane.showMessageDialog(LoginJF.this, "用户名或密码错误");
@@ -350,7 +355,7 @@ public class LoginJF extends JFrame { //加载界面方法 frame窗体
         this.setSize(w,h);//设置窗体的显示大小
         this.setResizable(false);//设置窗体是否拉伸
         this.setLocationRelativeTo(null);//让窗体居中显示
-        this.setTitle("盗版OICQ");//添加标题
+        this.setTitle("盗版QQ");//添加标题
         this.setIconImage(new ImageIcon(this.getClass().getResource("../images/1.jpg")).getImage());//设置窗体logo
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);//界面关闭之后，同步关闭程序进程
         //初始化数据
