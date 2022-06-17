@@ -32,7 +32,7 @@ public class QQMainJF extends JFrame {//找回密码
         bgJP.add(unameJl);
 
         //用户名输入框
-        JTextField unameJT=new JTextField("1");
+        JTextField unameJT=new JTextField("");
         unameJT.setBounds(150,170,150,26);
         unameJT.setFont(new Font("微软雅黑",Font.PLAIN,12));//调整字体大小
         bgJP.add(unameJT);
@@ -44,7 +44,7 @@ public class QQMainJF extends JFrame {//找回密码
         bgJP.add(nickNameJl);
 
         //用户名输入框
-        JTextField nickNameJT=new JTextField("1");
+        JTextField nickNameJT=new JTextField("");
         nickNameJT.setBounds(150,220,150,26);
         nickNameJT.setFont(new Font("微软雅黑",Font.PLAIN,12));//调整字体大小
         bgJP.add(nickNameJT);
@@ -66,7 +66,7 @@ public class QQMainJF extends JFrame {//找回密码
                     JOptionPane.showMessageDialog(QQMainJF.this,"昵称和用户名不能为空！");
                 }
                 else{
-                    UserInfo userInfo=userDao.getUserByNickName(Integer.parseInt(id),nickName);
+                    UserInfo userInfo=userDao.getUserByNickName(Integer.parseInt(id),nickName);//查询id和昵称是否匹配
                     if(userInfo!=null){
                         JOptionPane.showMessageDialog(QQMainJF.this,"您的密码是："+userInfo.getLoginpwd());
                         that.dispose();

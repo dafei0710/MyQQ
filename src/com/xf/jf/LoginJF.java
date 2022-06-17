@@ -259,8 +259,6 @@ public class LoginJF extends JFrame { //加载界面方法 frame窗体
 
         });
 
-
-
         bgJP.add(registerJL);
     }
 

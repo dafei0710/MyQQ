@@ -171,20 +171,20 @@ public class QQChatJFrame extends javax.swing.JFrame implements Runnable, Action
 				{
 					jLabel1 = new JLabel();
 					//图片自动调整，适应jlabel的大小
-					ImageIcon image1 = new ImageIcon("images/FormImage/QQ秀15.jpg");
-					image1.setImage(image1.getImage().getScaledInstance(177, 198, Image.SCALE_DEFAULT));
+					ImageIcon image1 = new ImageIcon(this.getClass().getResource("../images/QQ秀1.jpeg"));
+					image1.setImage(image1.getImage().getScaledInstance(150, 180, Image.SCALE_DEFAULT));
 					jLabel1.setIcon(image1);
 					jPanel1.add(jLabel1);
-					jLabel1.setBounds(696, 64, 177, 198);
+					jLabel1.setBounds(710, -40, 355, 392);//(696, 64, 177, 198);//900 700
 				}
 				{
 					jLabel2 = new JLabel();
 					//图片自动调整，适应jlabel的大小
-					ImageIcon image2 = new ImageIcon("images/FormImage/QQ秀16.jpg");
-					image2.setImage(image2.getImage().getScaledInstance(177, 198, Image.SCALE_DEFAULT));
+					ImageIcon image2 = new ImageIcon(this.getClass().getResource("../images/QQ秀2.gif"));
+					image2.setImage(image2.getImage().getScaledInstance(150, 180, Image.SCALE_DEFAULT));
 					jLabel2.setIcon(image2);
 					jPanel1.add(jLabel2);
-					jLabel2.setBounds(696, 268, 177, 198);
+					jLabel2.setBounds(710, 180, 355, 392);//(696, 268, 177, 198);
 				}
 				{
 					jScrollPane1 = new JScrollPane();
@@ -236,11 +236,11 @@ public class QQChatJFrame extends javax.swing.JFrame implements Runnable, Action
 					jLabel3 = new JLabel();
 
 
-					jLabel3.setText("您正在和:"+fNickName+"("+friendId+")聊天");
-					jLabel3.setFont(new Font("幼圆", 1, 16));
+					jLabel3.setText("您正在和:"+fNickName+"("+friendId+")聊天\n");
+					jLabel3.setFont(new Font("幼圆", 1, 18));
 					jLabel3.setForeground(Color.black);
 					jPanel1.add(jLabel3);
-					jLabel3.setBounds(265, 16, 500, 35);
+					jLabel3.setBounds(180, 16, 500, 35);
 				}
 			}
 			pack();
@@ -269,7 +269,7 @@ public class QQChatJFrame extends javax.swing.JFrame implements Runnable, Action
 			//System.out.println(messagesinfo.getMessagedate());
 			sb.append("\n");
 			sb.append("\n");
-			sb.append(messagesinfo.getMessage()+"\n");
+			sb.append("          "+messagesinfo.getMessage()+"\n");
 			sb.append("\n");
 		}
 		jTextArea1.setFont(new Font("宋体",Font.BOLD,14));
@@ -283,7 +283,7 @@ public class QQChatJFrame extends javax.swing.JFrame implements Runnable, Action
 		//jTextArea1.setSelectedTextColor(Color.blue);
 
 		try {
-			Thread.sleep(1000);
+			Thread.sleep(500);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}

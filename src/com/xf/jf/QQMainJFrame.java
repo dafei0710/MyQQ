@@ -128,7 +128,17 @@ public class QQMainJFrame extends javax.swing.JFrame implements WindowListener, 
 					jLabel2.setBounds(111, 13, 200, 75);//111,13,237,48,28
 
 					jLabel2.setText(this.userInfo.getNickname());//当前用户昵称赋值
+					jLabel2.addMouseListener(new MouseAdapter() {
+						@Override
+						public void mouseClicked(MouseEvent e) {
+							super.mouseClicked(e);
 
+							//jLabel2.setBounds(111, 13, 200, 75);//111,13,237,48,28
+							System.out.println(jLabel2.getText());
+							//jLabel2.setText("");
+
+						}
+					});
 					//System.out.println(this.userInfo.getNickname()+"www");
 					jLabel2.setFont(new Font("微软雅黑", Font.BOLD, 20));
 					jLabel2.setForeground(Color.red);
@@ -290,9 +300,9 @@ public class QQMainJFrame extends javax.swing.JFrame implements WindowListener, 
 					}
 					{
 						jPanel5 = new JPanel();
-						GridLayout jPanel5Layout = new GridLayout(2, 2);
-						jPanel5Layout.setColumns(2);
-						jPanel5Layout.setRows(2);
+						GridLayout jPanel5Layout = new GridLayout(3, 1);
+						jPanel5Layout.setColumns(1);
+						jPanel5Layout.setRows(1);
 						jPanel3.add(jPanel5, BorderLayout.SOUTH);
 						jPanel5.setLayout(jPanel5Layout);
 						jPanel5.setPreferredSize(new java.awt.Dimension(389, 100));
@@ -475,7 +485,7 @@ public class QQMainJFrame extends javax.swing.JFrame implements WindowListener, 
 
 								}
 
-								//
+								//获取好友昵称，好友id，好友状态，好友签名和好友头像
 								jls[i] = new JLabel(info.getNickname()+"("+friends.get(i).getFriendid()+")"+"["+ stae.getText()+"]"+" "+info.getSign(), new ImageIcon(this.getClass().getResource(icon)), JLabel.LEFT);
 								//jls[i] = new JLabel(info.getNickname()+"("+friends.get(i).getFriendid()+")", new ImageIcon(this.getClass().getResource(icon)), JLabel.LEFT);
 								System.out.println(info.getNickname());

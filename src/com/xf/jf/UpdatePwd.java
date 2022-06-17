@@ -90,7 +90,7 @@ public class UpdatePwd extends JFrame {//找回密码
                 System.out.println(id);
                 System.out.println(Update1Pwd);
                 System.out.println(Update2Pwd);
-                if((Update1Pwd.equals(Update2Pwd))){
+                if((Update1Pwd.equals(Update2Pwd))){//如果输入的新密码和确认的新密码一致，则进行修改修改
                     UserInfo user =userDao.updatePwd((Id),Update2Pwd);
                     userDao.updatePwd(Id,Update2Pwd);
                     JOptionPane.showMessageDialog(UpdatePwd.this,"密码修改成功,请退出重新登陆!");
@@ -99,8 +99,8 @@ public class UpdatePwd extends JFrame {//找回密码
                     updata2pwdJT.setText("");
                     that.dispose();
                     exit(0);
-                    LoginJF loginJF =new LoginJF();
-                    loginJF.loadJF();
+//                    LoginJF loginJF =new LoginJF();
+//                    loginJF.loadJF();
                 }
                 else{
                     JOptionPane.showMessageDialog(UpdatePwd.this,"请确认两次输入密码是否一致");
