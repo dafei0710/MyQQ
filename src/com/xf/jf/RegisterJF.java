@@ -66,7 +66,6 @@ public class RegisterJF extends JFrame {
         pwdJT.setFont(new Font("宋体",Font.BOLD,22));
         pwdJT.setForeground(Color.darkGray);
 
-
         JLabel eyeIs =new JLabel();
         eyeIs.setIcon(new ImageIcon(this.getClass().getResource("../images/eye.png")));//设置背景图
         eyeIs.setBounds(965,333,39,24);
@@ -77,10 +76,8 @@ public class RegisterJF extends JFrame {
         eyeIs.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-//                super.mouseClicked(e);
                 eyeIsClose.setVisible(true);
                 eyeIs.setVisible(false);
-                
                 pwdJT.setEchoChar('*');
 
             }
@@ -90,15 +87,11 @@ public class RegisterJF extends JFrame {
         eyeIsClose.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-//                super.mouseClicked(e);
                 eyeIsClose.setVisible(false);
                 eyeIs.setVisible(true);
-                pwdJT.setEchoChar((char)0);//设置铭明文显示
-
-
+                pwdJT.setEchoChar((char)0);//设置明文显示
             }
         });
-//        eyeIsClose.setVisible(true);
         bgJP.add(eyeIs);
         bgJP.add(eyeIsClose);
         pwdJT.addFocusListener(new FocusAdapter() {
@@ -119,7 +112,6 @@ public class RegisterJF extends JFrame {
                 if(pwdJT.getText().trim().equals("")){
                     pwdJT.setEchoChar((char)0);
                     pwdJT.setText("  密码");//复原文本框内容
-
                     pwdJT.setForeground(Color.darkGray);//设置文字颜色
                 }
 

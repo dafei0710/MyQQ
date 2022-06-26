@@ -85,8 +85,6 @@ public class UpdatePwd extends JFrame {//找回密码
                 int id=Integer.parseInt(idJT.getText());
                 String Update1Pwd=updata1pwdJT.getText();
                 String Update2Pwd=updata2pwdJT.getText();
-                //System.out.println(Integer.parseInt(id)+"    "+nickName);
-                //UserInfo userInfo =new UserDao();
                 System.out.println(id);
                 System.out.println(Update1Pwd);
                 System.out.println(Update2Pwd);
@@ -99,8 +97,6 @@ public class UpdatePwd extends JFrame {//找回密码
                     updata2pwdJT.setText("");
                     that.dispose();
                     exit(0);
-//                    LoginJF loginJF =new LoginJF();
-//                    loginJF.loadJF();
                 }
                 else{
                     JOptionPane.showMessageDialog(UpdatePwd.this,"请确认两次输入密码是否一致");
